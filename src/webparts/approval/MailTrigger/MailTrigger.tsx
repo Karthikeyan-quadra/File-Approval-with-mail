@@ -1,13 +1,12 @@
-//MailTrigger.tsx
+// MailTrigger.tsx
 import "@pnp/sp/lists";
 import { IEmailProperties } from "@pnp/sp/presets/all";
 import { SPFI } from "@pnp/sp";
 import "@pnp/sp/sputilities";
 import { getSP } from "../helpers/Pnpconfig";
 
-export async function Approvemail(msg: string, userMail: string, displayName: string, senderName: string) {
+export async function Approvemail(msg: string, userMail: string, userName: string, senderName: string, fileName: string) {
   try {
-    // Check if the message is not empty
     if (!msg.trim()) {
       throw new Error("Message cannot be empty");
     }
@@ -23,8 +22,9 @@ export async function Approvemail(msg: string, userMail: string, displayName: st
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
           </head>
           <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-            <p>Dear ${displayName},</p>
+            <p>Dear ${userName},</p>
             <p>${msg}</p>
+            <p>File Name: ${fileName}</p>
 
             <p style="margin-top:100px; font-size:14px; margin-bottom:5px;"><b>Thanks & Regards,</b></p>
             <p style="margin-top:5px; font-size:14px; margin-bottom:0px;"><b>${senderName} | </b></p>
@@ -35,7 +35,6 @@ export async function Approvemail(msg: string, userMail: string, displayName: st
       `,
     };
 
-    // Ensure that getSP returns a valid SPFI object
     const sp: SPFI = getSP();
 
     if (!sp) {
@@ -46,13 +45,12 @@ export async function Approvemail(msg: string, userMail: string, displayName: st
     console.log("Email sent successfully");
   } catch (error) {
     console.error("Error sending email:", error);
-    throw error; // Rethrow the error if needed for further handling
+    throw error;
   }
 }
 
-export async function Deniedmail(msg: string, userMail: string, displayName: string, senderName: string) {
+export async function Deniedmail(msg: string, userMail: string, userName: string, senderName: string, fileName: string) {
   try {
-    // Check if the message is not empty
     if (!msg.trim()) {
       throw new Error("Message cannot be empty");
     }
@@ -68,8 +66,9 @@ export async function Deniedmail(msg: string, userMail: string, displayName: str
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
           </head>
           <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-            <p>Dear ${displayName},</p>
-            <p>Your file had been denied due to ${msg}</p>
+            <p>Dear ${userName},</p>
+            <p>${msg}</p>
+            <p>File Name: ${fileName}</p>
 
             <p style="margin-top:100px; font-size:14px; margin-bottom:5px;"><b>Thanks & Regards,</b></p>
             <p style="margin-top:5px; font-size:14px; margin-bottom:0px;"><b>${senderName} | </b></p>
@@ -80,7 +79,6 @@ export async function Deniedmail(msg: string, userMail: string, displayName: str
       `,
     };
 
-    // Ensure that getSP returns a valid SPFI object
     const sp: SPFI = getSP();
 
     if (!sp) {
@@ -91,6 +89,6 @@ export async function Deniedmail(msg: string, userMail: string, displayName: str
     console.log("Email sent successfully");
   } catch (error) {
     console.error("Error sending email:", error);
-    throw error; // Rethrow the error if needed for further handling
+    throw error;
   }
 }
